@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ContractRepository  extends CrudRepository<Contract,Long> {
 
     Optional<Contract> findByContractId(Long id);
+
+    Iterable<Contract> findContractByContractTypeNameLikeIgnoreCase(String name);
 }

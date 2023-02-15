@@ -1,14 +1,14 @@
 package org.example.repositories;
 
-import org.example.entities.Apartment;
+import org.example.entities.ApartmentWithBuilding;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface ApartmentRepository extends CrudRepository<Apartment,Long> {
+public interface ApartmentRepository extends CrudRepository<ApartmentWithBuilding,Long> {
 
-    Optional<Apartment> findByApartmentID(Long apartmentID);
+    Optional<ApartmentWithBuilding> findByApartmentID(Long apartmentID);
 
 }

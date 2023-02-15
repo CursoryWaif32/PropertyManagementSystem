@@ -39,12 +39,4 @@ public class BuildingsController {
         }
         return building.get();
     }
-
-    @GetMapping("/{id}/apartments")
-    public List<Apartment> getApartmentsForBuilding(@PathVariable Long id){
-
-        BuildingWithApartments buildingWithApartmentsID = getBuildingById(id);
-        return buildingWithApartmentsID.getApartments();
-    }
-
 }

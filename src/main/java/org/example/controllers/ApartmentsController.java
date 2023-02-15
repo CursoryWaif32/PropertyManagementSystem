@@ -1,5 +1,7 @@
 package org.example.controllers;
 
+import org.example.entities.ApartmentWithBuilding;
+import org.example.entities.Building;
 import org.example.repositories.ApartmentRepository;
 import org.example.entities.Apartment;
 import org.springframework.http.HttpStatus;
@@ -20,8 +22,8 @@ public class ApartmentsController {
 
 
     @GetMapping("/{id}")
-    public Apartment getApartmentsByID(@PathVariable Long id) {
-        Optional<Apartment> apartment =  apartmentRepo.findByApartmentID(id);
+    public ApartmentWithBuilding getApartmentByID(@PathVariable Long id) {
+        Optional<ApartmentWithBuilding> apartment =  apartmentRepo.findByApartmentID(id);
         if(apartment.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -29,7 +31,7 @@ public class ApartmentsController {
     }
 
     @GetMapping
-    public Iterable<Apartment> getAllApartments(){
+    public Iterable<ApartmentWithBuilding> getAllApartments(){
         return apartmentRepo.findAll();
     }
 }
