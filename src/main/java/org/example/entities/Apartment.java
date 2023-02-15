@@ -1,6 +1,7 @@
 package org.example.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +15,20 @@ public class Apartment {
         return number;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "buildingID")
+    @JsonBackReference
+    private Building building;
+
     public void setNumber(Long number) {
         this.number = number;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 }
