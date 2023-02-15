@@ -1,10 +1,7 @@
 package org.example.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Buildings")
@@ -15,9 +12,7 @@ public class Building {
     private long buildingId;
     private String address;
 
-    @OneToMany(mappedBy = "building")
-    @JsonManagedReference
-    private List<Apartment> apartments;
+
 
     public long getBuildingId() {
         return buildingId;
@@ -34,13 +29,5 @@ public class Building {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<Apartment> getApartments() {
-        return apartments;
-    }
-
-    public void setApartments(List<Apartment> apartments) {
-        this.apartments = apartments;
     }
 }

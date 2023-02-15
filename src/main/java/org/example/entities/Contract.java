@@ -17,7 +17,7 @@ public class Contract {
 
   @ManyToOne
   @JoinColumn(name = "apartmentID")
-  private Apartment apartment;
+  private ApartmentWithBuilding apartmentWithBuilding;
 
   @ManyToOne
   @JoinColumn(name = "contractTypeID")
@@ -44,12 +44,12 @@ public class Contract {
   }
 
 
-  public Apartment getApartment() {
-    return apartment;
+  public ApartmentWithBuilding getApartment() {
+    return apartmentWithBuilding;
   }
 
-  public void setApartment(Apartment apartment) {
-    this.apartment = apartment;
+  public void setApartment(ApartmentWithBuilding apartmentWithBuildingId) {
+    this.apartmentWithBuilding = apartmentWithBuildingId;
   }
 
 
