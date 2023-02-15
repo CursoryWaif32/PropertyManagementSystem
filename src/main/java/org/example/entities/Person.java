@@ -12,7 +12,9 @@ public class Person {
   private String firstName;
   private String lastName;
   private String idNumber;
-  private long personTypeId;
+
+  @ManyToOne
+  private PersonType personTypeId;
 
 
   public long getPersonId() {
@@ -51,11 +53,11 @@ public class Person {
   }
 
 
-  public long getPersonTypeId() {
+  public PersonType getPersonTypeId() {
     return personTypeId;
   }
 
-  public void setPersonTypeId(long personTypeId) {
+  public void setPersonTypeId(PersonType personTypeId) {
     this.personTypeId = personTypeId;
   }
 
