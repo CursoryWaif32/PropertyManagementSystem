@@ -26,7 +26,7 @@ public class Person {
 
   @ManyToOne
   @JoinColumn(name = "personTypeID")
-  private PersonType personTypeId;
+  private PersonType personType;
 
 
   public long getPersonId() {
@@ -65,12 +65,12 @@ public class Person {
   }
 
 
-  public PersonType getPersonTypeId() {
-    return personTypeId;
+  public PersonType getPersonType() {
+    return personType;
   }
 
-  public void setPersonTypeId(PersonType personTypeId) {
-    this.personTypeId = personTypeId;
+  public void setPersonType(PersonType personTypeId) {
+    this.personType = personTypeId;
   }
 
   public List<PhoneNumber> getPhoneNumbers() {

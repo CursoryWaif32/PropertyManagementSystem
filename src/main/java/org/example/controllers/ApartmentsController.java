@@ -3,7 +3,6 @@ package org.example.controllers;
 import org.example.repositories.ApartmentRepository;
 import org.example.entities.Apartment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 

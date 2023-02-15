@@ -10,9 +10,18 @@ public class Contract {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long contractId;
-  private long personId;
-  private long apartmentId;
-  private long contractTypeId;
+
+  @ManyToOne
+  @JoinColumn(name = "personID")
+  private Person person;
+
+  @ManyToOne
+  @JoinColumn(name = "apartmentID")
+  private ApartmentWithBuilding apartmentWithBuilding;
+
+  @ManyToOne
+  @JoinColumn(name = "contractTypeID")
+  private ContractType contractType;
   private java.sql.Date contractStartDate;
   private java.sql.Date contractEndDate;
 
@@ -26,30 +35,30 @@ public class Contract {
   }
 
 
-  public long getPersonId() {
-    return personId;
+  public Person getPerson() {
+    return person;
   }
 
-  public void setPersonId(long personId) {
-    this.personId = personId;
-  }
-
-
-  public long getApartmentId() {
-    return apartmentId;
-  }
-
-  public void setApartmentId(long apartmentId) {
-    this.apartmentId = apartmentId;
+  public void setPerson(Person personId) {
+    this.person = personId;
   }
 
 
-  public long getContractTypeId() {
-    return contractTypeId;
+  public ApartmentWithBuilding getApartment() {
+    return apartmentWithBuilding;
   }
 
-  public void setContractTypeId(long contractTypeId) {
-    this.contractTypeId = contractTypeId;
+  public void setApartment(ApartmentWithBuilding apartmentWithBuildingId) {
+    this.apartmentWithBuilding = apartmentWithBuildingId;
+  }
+
+
+  public ContractType getContractType() {
+    return contractType;
+  }
+
+  public void setContractType(ContractType contractTypeId) {
+    this.contractType = contractTypeId;
   }
 
 

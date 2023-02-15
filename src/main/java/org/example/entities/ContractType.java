@@ -12,14 +12,6 @@ public class ContractType {
   private String name;
 
 
-  public long getContractTypeId() {
-    return contractTypeId;
-  }
-
-  public void setContractTypeId(long contractTypeId) {
-    this.contractTypeId = contractTypeId;
-  }
-
 
   public String getName() {
     return name;
