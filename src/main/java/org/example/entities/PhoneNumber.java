@@ -8,18 +8,8 @@ import jakarta.persistence.Table;
 @Table(name = "PhoneNumbers")
 public class PhoneNumber {
 
-  private long personId;
   @Id
   private String phoneNumber;
-
-
-  public long getPersonId() {
-    return personId;
-  }
-
-  public void setPersonId(long personId) {
-    this.personId = personId;
-  }
 
 
   public String getPhoneNumber() {

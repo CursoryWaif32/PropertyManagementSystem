@@ -10,9 +10,6 @@ public class Apartment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long apartmentID;
     private Long number;
-    @ManyToOne
-    @JoinColumn(name = "buildingID")
-    private Building buildingID;
 
     public void setApartmentID(Long id) {
         this.apartmentID = id;
@@ -20,14 +17,6 @@ public class Apartment {
 
     public Long getApartmentID() {
         return apartmentID;
-    }
-
-    public Building getBuildingID() {
-        return buildingID;
-    }
-
-    public void setBuildingID(Building buildingID) {
-        this.buildingID = buildingID;
     }
 
     public Long getNumber() {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,10 +41,10 @@ public class BuildingsController {
     }
 
     @GetMapping("/{id}/apartments")
-    public Iterable<Apartment> getApartmentsForBuilding(@PathVariable Long id){
+    public List<Apartment> getApartmentsForBuilding(@PathVariable Long id){
 
         Building buildingID = getBuildingById(id);
-        return apartmentRepo.findByBuildingID(buildingID);
+        return buildingID.getApartments();
     }
 
 }

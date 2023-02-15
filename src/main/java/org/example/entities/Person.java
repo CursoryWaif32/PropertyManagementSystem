@@ -2,6 +2,8 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "People")
 public class Person {
@@ -13,7 +15,17 @@ public class Person {
   private String lastName;
   private String idNumber;
 
+  @OneToMany
+  @JoinColumn(name = "personID")
+  private List<PhoneNumber> phoneNumbers;
+
+  @OneToMany
+  @JoinColumn(name = "personID")
+  private List<Email> emails;
+
+
   @ManyToOne
+  @JoinColumn(name = "personTypeID")
   private PersonType personTypeId;
 
 
@@ -61,4 +73,19 @@ public class Person {
     this.personTypeId = personTypeId;
   }
 
+  public List<PhoneNumber> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public List<Email> getEmails() {
+    return emails;
+  }
+
+  public void setEmails(List<Email> emails) {
+    this.emails = emails;
+  }
 }
