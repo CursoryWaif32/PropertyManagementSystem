@@ -21,4 +21,11 @@ public class ContractType {
     this.name = name;
   }
 
+  public long getContractTypeId() {
+    return contractTypeId;
+  }
+
+  public void setContractTypeId(long contractTypeId) {
+    this.contractTypeId = contractTypeId;
+  }
 }

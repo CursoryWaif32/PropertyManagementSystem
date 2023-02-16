@@ -12,12 +12,17 @@ public class Contract {
   private long contractId;
 
   @ManyToOne
+  @JoinColumns(
+          {
+                  @JoinColumn(name = "apartmentNumber"),
+                  @JoinColumn(name = "buildingID")
+          }
+  )
+  private ApartmentWithBuilding apartmentWithBuilding;
+  @ManyToOne
   @JoinColumn(name = "personID")
   private Person person;
 
-  @ManyToOne
-  @JoinColumn(name = "apartmentID")
-  private ApartmentWithBuilding apartmentWithBuilding;
 
   @ManyToOne
   @JoinColumn(name = "contractTypeID")

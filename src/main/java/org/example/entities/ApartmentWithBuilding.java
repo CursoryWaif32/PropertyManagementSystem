@@ -3,17 +3,33 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @Entity
 @Table(name = "Apartments")
-public class ApartmentWithBuilding {
+@IdClass(ApartmentWithBuilding.class)
+public class ApartmentWithBuilding implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long apartmentID;
     private Long number;
 
+    @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "buildingID")
     private Building building;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ApartmentWithBuilding that = (ApartmentWithBuilding) o;
+        return number.equals(that.number) && building.equals(that.building);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, building);
+    }
 
     public Long getNumber() {
         return number;
@@ -29,13 +45,5 @@ public class ApartmentWithBuilding {
 
     public void setBuilding(Building building) {
         this.building = building;
-    }
-
-    public Long getApartmentID() {
-        return apartmentID;
-    }
-
-    public void setApartmentID(Long apartmentID) {
-        this.apartmentID = apartmentID;
     }
 }

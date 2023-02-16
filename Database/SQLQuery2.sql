@@ -67,32 +67,35 @@ GO
 
 INSERT INTO ApartmentTrafficLog(
 	PersonID,
-	ApartmentID
+	ApartmentNumber,
+    BuildingID
 )
 VALUES
-	(1,2),
-	(2,2),
-	(2,2),
-	(1,3),
-	(2,3),
-	(3,1)
+	(1,2,1),
+	(2,2,1),
+	(2,2,1),
+	(1,1,2),
+	(2,1,2),
+	(3,2,1)
 GO
 
 INSERT INTO Contracts(
 	PersonID,
-	ApartmentID,
+	ApartmentNumber,
+    BuildingID,
 	ContractTypeID,
 	ContractStartDate
 )
 VALUES
-	(1,1,1,GETDATE())
+	(1,1,1,1,GETDATE())
 	
 INSERT INTO Contracts(
 	PersonID,
-	ApartmentID,
+	ApartmentNumber,
+    BuildingID,
 	ContractTypeID,
 	ContractStartDate,
 	ContractEndDate
 )
 VALUES
-	(4,3,2,GETDATE(),GETDATE())
+	(4,3,1,2,GETDATE(),GETDATE())

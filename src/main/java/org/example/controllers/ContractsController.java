@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import org.example.dto.ContractDTO;
 import org.example.entities.Contract;
 import org.example.repositories.ContractRepository;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,14 @@ public class ContractsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return contract.get();
+    }
+
+    @PostMapping
+    public void addContract(@RequestBody ContractDTO contractDTO){
+        Long personID = contractDTO.personID();
+        Long buildingID = contractDTO.BuildingID();
+        Long apartmentNumber = contractDTO.ApartmentNumber();
+        Long contractType = contractDTO.ContractTypeID();
+        contractRepo.uspCreateContract(personID,apartmentNumber,buildingID,contractType,null);
     }
 }
