@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -37,6 +38,20 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public void updatePersonDetails(@PathVariable Long id, @RequestBody PersonDTO personDTO){
         Person person = getPersonByID(id);
+        updatePersonDetails(personDTO, person);
+        peopleRepo.save(person);
+    }
+
+    @PostMapping
+    void addPerson(@RequestBody PersonDTO personDTO){
+        Person person = new Person();
+        person.setEmails(new ArrayList<>());
+        person.setPhoneNumbers(new ArrayList<>());
+        updatePersonDetails(personDTO, person);
+        peopleRepo.save(person);
+    }
+
+    private void updatePersonDetails(@RequestBody PersonDTO personDTO, Person person) {
         person.setFirstName(personDTO.firstName().orElse(person.getFirstName()));
         person.setLastName(personDTO.lastName().orElse(person.getLastName()));
         if(personDTO.emails().isPresent()){
@@ -54,6 +69,5 @@ public class PeopleController {
             });
         }
         person.setIdNumber(personDTO.idNumber().orElse(person.getIdNumber()));
-        peopleRepo.save(person);
     }
 }

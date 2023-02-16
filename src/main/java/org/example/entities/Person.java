@@ -9,7 +9,7 @@ import java.util.List;
 public class Person {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long personId;
   private String firstName;
   private String lastName;
@@ -24,9 +24,9 @@ public class Person {
   private List<Email> emails;
 
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "personTypeID")
-  private PersonType personType;
+  private PersonType personType = new PersonType();
 
 
   public long getPersonId() {

@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 public class PersonType {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long personTypeId;
-  private String name;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long personTypeId = 1;
+  private String name = "Visitor";
 
   public String getName() {
     return name;
