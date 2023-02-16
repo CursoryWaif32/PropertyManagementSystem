@@ -15,7 +15,7 @@ GO
 
 CREATE TABLE Buildings(
 	BuildingID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
-	Address geography NOT NULL,
+	Address varchar(255) NOT NULL UNIQUE,
 
 );
 GO
@@ -24,6 +24,7 @@ CREATE TABLE Apartments(
 	ApartmentID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
 	Number int NULL,
 	BuildingID int FOREIGN KEY REFERENCES Buildings,
+	CONSTRAINT uniqueNumberPerBuilding UNIQUE (Number, BuildingID)
 );
 GO
 

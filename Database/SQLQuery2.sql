@@ -7,8 +7,8 @@ GO
 INSERT INTO Buildings
 	(Address)
 VALUES
-	(geography::Point(10,10,4120)),
-	(geography::Point(1,1,4120))
+	('Johannesburg'),
+	('Cape Town')
 GO
 
 INSERT INTO Apartments(

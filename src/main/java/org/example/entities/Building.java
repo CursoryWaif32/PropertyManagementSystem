@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Building {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long buildingId;
     private String address;
 

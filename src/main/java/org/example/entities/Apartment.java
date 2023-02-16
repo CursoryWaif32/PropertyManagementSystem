@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "Apartments")
 public class Apartment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long apartmentID;
     private Long number;
     public Long getNumber() {

@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 @Table(name = "Apartments")
 public class ApartmentWithBuilding {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long apartmentID;
     private Long number;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "buildingID")
     private Building building;
 
@@ -29,5 +29,13 @@ public class ApartmentWithBuilding {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public Long getApartmentID() {
+        return apartmentID;
+    }
+
+    public void setApartmentID(Long apartmentID) {
+        this.apartmentID = apartmentID;
     }
 }

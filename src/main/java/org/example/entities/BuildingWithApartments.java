@@ -10,11 +10,11 @@ import java.util.List;
 public class BuildingWithApartments{
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long buildingId;
   private String address;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "buildingID")
   private List<Apartment> apartments;
 
