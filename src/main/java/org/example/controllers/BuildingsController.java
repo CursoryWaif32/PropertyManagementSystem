@@ -1,13 +1,15 @@
 package org.example.controllers;
 
-import org.example.dto.BuildingDTO;
+import org.example.dto.BuildingAddDTO;
+import org.example.dto.BuildingEditDTO;
+import org.example.entities.Apartment;
 import org.example.entities.BuildingWithApartments;
-import org.example.repositories.ApartmentRepository;
 import org.example.repositories.BuildingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +18,9 @@ import java.util.Optional;
 public class BuildingsController {
 
     final BuildingRepository buildingRepo;
-    final ApartmentRepository apartmentRepo;
 
-    public BuildingsController(BuildingRepository buildingRepo, ApartmentRepository apartmentRepo) {
+    public BuildingsController(BuildingRepository buildingRepo) {
         this.buildingRepo = buildingRepo;
-        this.apartmentRepo = apartmentRepo;
     }
 
     @GetMapping
@@ -38,17 +38,33 @@ public class BuildingsController {
     }
 
     @PostMapping
-    public void addBuilding(@RequestBody BuildingWithApartments building){
+    public void addBuilding(@RequestBody BuildingAddDTO buildingDTO){
+        BuildingWithApartments building = new BuildingWithApartments();
+        building.setAddress(buildingDTO.address());
+        List<Apartment> apartmentList = new ArrayList<>();
+        if(buildingDTO.apartments().isPresent()){
+            buildingDTO.apartments().get().forEach(apartmentDTO -> {
+                Apartment apartment = new Apartment();
+                apartment.setNumber(apartmentDTO.number());
+                apartmentList.add(apartment);
+            });
+            building.setApartments(apartmentList);
+        }
         buildingRepo.save(building);
     }
 
     @PatchMapping("/{id}")
-    public void editBuilding(@PathVariable Long id, @RequestBody Optional<BuildingDTO> buildingUpdate){
+    public void editBuilding(@PathVariable Long id, @RequestBody BuildingEditDTO buildingUpdate){
         BuildingWithApartments building = getBuildingById(id);
-        if(buildingUpdate.isPresent()){
-            if(buildingUpdate.get().address != null){
-                building.setAddress(buildingUpdate.get().address);
-            }
+        if(buildingUpdate.address().isPresent()){
+            building.setAddress(buildingUpdate.address().get());
+        }
+        if(buildingUpdate.addedApartments().isPresent()){
+            buildingUpdate.addedApartments().get().forEach(apartmentDTO -> {
+                Apartment apartment = new Apartment();
+                apartment.setNumber(apartmentDTO.number());
+                building.getApartments().add(apartment);
+            });
         }
         buildingRepo.save(building);
     }
