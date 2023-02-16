@@ -15,11 +15,11 @@ public class Person {
   private String lastName;
   private String idNumber;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "personID")
   private List<PhoneNumber> phoneNumbers;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "personID")
   private List<Email> emails;
 

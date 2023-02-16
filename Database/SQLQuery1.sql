@@ -51,13 +51,13 @@ CREATE TABLE People(
 GO
 
 CREATE TABLE Emails(
-	PersonID int FOREIGN KEY REFERENCES People NOT NULL,
+	PersonID int FOREIGN KEY REFERENCES People,
 	Email varchar(50) NOT NULL PRIMARY KEY CLUSTERED,
 );
 GO
 
 CREATE TABLE PhoneNumbers(
-	PersonID int FOREIGN KEY REFERENCES People NOT NULL,
+	PersonID int FOREIGN KEY REFERENCES People,
 	PhoneNumber varchar(20) NOT NULL PRIMARY KEY CLUSTERED,
 	CONSTRAINT PhoneNumberIsNumericCheck CHECK (ISNUMERIC(PhoneNumber) = 1 ),
 );
@@ -100,7 +100,7 @@ CREATE PROCEDURE uspCreateContract
 	@ContractTypeID int,
 	@StartDate date = NULL
 AS
-	IF @StartDate = NULL
+	IF @StartDate IS NULL
 		SELECT @StartDate = GETDATE();
 	UPDATE People SET PersonTypeID = 2 WHERE PersonID = @PersonID
 	INSERT INTO Contracts(
