@@ -22,7 +22,7 @@ GO
 
 CREATE TABLE Apartments(
 	Number int NOT NULL,
-	BuildingID int NOT NULL FOREIGN KEY REFERENCES Buildings,
+	BuildingID int FOREIGN KEY REFERENCES Buildings,
 	CONSTRAINT uniqueNumberPerBuilding PRIMARY KEY (Number, BuildingID)
 );
 GO

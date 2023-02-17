@@ -11,7 +11,9 @@ import java.util.Objects;
 @IdClass(Apartment.class)
 public class Apartment implements Serializable {
     @Id
-    private Long buildingID;
+    @ManyToOne()
+    @JoinColumn(name = "buildingID")
+    private Building buildingID;
     @Id
     private Long number;
 

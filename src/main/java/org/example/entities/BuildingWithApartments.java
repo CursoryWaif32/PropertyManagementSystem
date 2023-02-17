@@ -14,8 +14,7 @@ public class BuildingWithApartments{
   private long buildingId;
   private String address;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "buildingID")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "buildingID")
   private List<Apartment> apartments;
 
 

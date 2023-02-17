@@ -1,5 +1,7 @@
 package org.example.controllers;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.dto.ContractDTO;
 import org.example.dto.ContractEditDTO;
 import org.example.entities.BuildingWithApartments;
@@ -46,12 +48,21 @@ public class ContractsController {
         return contract.get();
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="404",description = "No Person found with ID: {personID}"),
+                    @ApiResponse(responseCode="404",description = "Unknown Person/Building/Apartment"),
+                    @ApiResponse(responseCode="403",description = "Person does not have necessary details to create a contract (No ID number)"),
+                    @ApiResponse(responseCode = "200", description="OK")
+            }
+    )
     @PostMapping
     public void addContract(@RequestBody ContractDTO contractDTO){
         Long personID = contractDTO.personID();
         Person person = peopleRepo.findByPersonId(personID).orElse(null);
         if(person == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Person found with personID: "+personID);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Person found with ID: "+personID);
         }
         if(person.getIdNumber() == null){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Person does not have necessary details to create a contract (No ID number)");
@@ -69,6 +80,13 @@ public class ContractsController {
         contractRepo.uspCreateContract(personID,apartmentNumber,buildingID,contractType,null);
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="403",description = "Contract already finished"),
+                    @ApiResponse(responseCode = "200", description="OK")
+            }
+    )
     @DeleteMapping("/{id}")
     public void endContract(@PathVariable Long id){
         Contract contract = getContractByID(id);
@@ -78,6 +96,14 @@ public class ContractsController {
         contractRepo.uspEndContract(contract.getContractId());
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="400",description = "No Change in current details"),
+                    @ApiResponse(responseCode="403",description = "Contract already finished"),
+                    @ApiResponse(responseCode = "200", description="OK")
+            }
+    )
     @PatchMapping("/{id}")
     public void editContract(@PathVariable Long id, @RequestBody ContractEditDTO contractEditDTO){
         Contract contract = getContractByID(id);

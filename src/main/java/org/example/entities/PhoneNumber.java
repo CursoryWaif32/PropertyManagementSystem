@@ -20,4 +20,16 @@ public class PhoneNumber {
     this.phoneNumber = phoneNumber;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PhoneNumber that = (PhoneNumber) o;
+    return phoneNumber.equals(that.phoneNumber);
+  }
+
+  @Override
+  public int hashCode() {
+    return phoneNumber.hashCode();
+  }
 }

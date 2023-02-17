@@ -1,5 +1,7 @@
 package org.example.controllers;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.dto.BuildingAddDTO;
 import org.example.dto.BuildingEditDTO;
 import org.example.entities.Apartment;
@@ -23,11 +25,18 @@ public class BuildingsController {
         this.buildingRepo = buildingRepo;
     }
 
-    @GetMapping
+    @GetMapping()
     public Iterable<BuildingWithApartments> getAllBuildings(){
         return buildingRepo.findAll();
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="404",description = "Unknown Building"),
+                    @ApiResponse(responseCode = "200", description="OK")
+            }
+    )
     @GetMapping("/{id}")
     public BuildingWithApartments getBuildingById(@PathVariable Long id){
         Optional<BuildingWithApartments> building = buildingRepo.findByBuildingId(id);

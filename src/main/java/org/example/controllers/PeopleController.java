@@ -1,5 +1,7 @@
 package org.example.controllers;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.dto.PersonDTO;
 import org.example.entities.Email;
 import org.example.entities.Person;
@@ -26,6 +28,13 @@ public class PeopleController {
         return peopleRepo.findAll();
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="404",description = "Unknown Person"),
+                    @ApiResponse(responseCode = "200", description="OK"),
+            }
+    )
     @GetMapping("/{id}")
     public Person getPersonByID(@PathVariable Long id){
         Optional<Person> person = peopleRepo.findByPersonId(id);
@@ -51,6 +60,12 @@ public class PeopleController {
         peopleRepo.save(person);
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode="400",description = "Bad ID Number"),
+                    @ApiResponse(responseCode = "200", description="OK"),
+            }
+    )
     private void updatePersonDetails(@RequestBody PersonDTO personDTO, Person person) {
         person.setFirstName(personDTO.firstName().orElse(person.getFirstName()));
         person.setLastName(personDTO.lastName().orElse(person.getLastName()));
@@ -67,6 +82,15 @@ public class PeopleController {
                 phoneNumber.setPhoneNumber(phoneNumberDTO.phoneNumber());
                 person.getPhoneNumbers().add(phoneNumber);
             });
+        }
+        if(personDTO.idNumber().isPresent()){
+            if(personDTO.idNumber().get().length()!=13)
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"ID not 13 characters");
+            for(Character c: personDTO.idNumber().get().toCharArray()){
+                if (!Character.isDigit(c)){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"ID contains non numeric values");
+                }
+            }
         }
         person.setIdNumber(personDTO.idNumber().orElse(person.getIdNumber()));
     }
