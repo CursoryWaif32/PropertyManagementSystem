@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class Person {
   private String firstName;
   private String lastName;
   private String idNumber;
+
+  @OneToMany(mappedBy = "person")
+  @JsonManagedReference
+  private List<Contract> contracts;
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "personID")
@@ -87,5 +92,13 @@ public class Person {
 
   public void setEmails(List<Email> emails) {
     this.emails = emails;
+  }
+
+  public List<Contract> getContracts() {
+    return contracts;
+  }
+
+  public void setContracts(List<Contract> contracts) {
+    this.contracts = contracts;
   }
 }

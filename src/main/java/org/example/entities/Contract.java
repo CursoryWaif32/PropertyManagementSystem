@@ -1,6 +1,8 @@
 package org.example.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,16 +13,13 @@ public class Contract {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long contractId;
 
-  @ManyToOne
-  @JoinColumns(
-          {
-                  @JoinColumn(name = "apartmentNumber"),
-                  @JoinColumn(name = "buildingID")
-          }
-  )
-  private ApartmentWithBuilding apartmentWithBuilding;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "apartmentID")
+  @JsonBackReference
+  private Apartment apartment;
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "personID")
+  @JsonBackReference
   private Person person;
 
 
@@ -49,12 +48,12 @@ public class Contract {
   }
 
 
-  public ApartmentWithBuilding getApartment() {
-    return apartmentWithBuilding;
+  public Apartment getApartment() {
+    return apartment;
   }
 
-  public void setApartment(ApartmentWithBuilding apartmentWithBuildingId) {
-    this.apartmentWithBuilding = apartmentWithBuildingId;
+  public void setApartment(Apartment apartment) {
+    this.apartment = apartment;
   }
 
 

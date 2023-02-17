@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.dto.ContractDTO;
 import org.example.dto.ContractEditDTO;
-import org.example.entities.BuildingWithApartments;
+import org.example.entities.Building;
 import org.example.entities.Contract;
 import org.example.entities.Person;
 import org.example.repositories.BuildingRepository;
@@ -67,8 +67,8 @@ public class ContractsController {
         if(person.getIdNumber() == null){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Person does not have necessary details to create a contract (No ID number)");
         }
-        Long buildingID = contractDTO.BuildingID();
-        BuildingWithApartments building = buildingRepo.findByBuildingId(buildingID).orElse(null);
+        Long buildingID = contractDTO.buildingID();
+        Building building = buildingRepo.findByBuildingId(buildingID).orElse(null);
         if(building == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Building found with ID: "+buildingID);
         }

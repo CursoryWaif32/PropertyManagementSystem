@@ -21,9 +21,10 @@ CREATE TABLE Buildings(
 GO
 
 CREATE TABLE Apartments(
+    ApartmentID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
 	Number int NOT NULL,
 	BuildingID int FOREIGN KEY REFERENCES Buildings,
-	CONSTRAINT uniqueNumberPerBuilding PRIMARY KEY (Number, BuildingID)
+	Bedrooms int,
 );
 GO
 
@@ -65,13 +66,11 @@ GO
 CREATE TABLE Contracts(
 	ContractID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
 	PersonID int FOREIGN KEY REFERENCES People,
-	ApartmentNumber int,
-	BuildingID int,
+	ApartmentID int FOREIGN KEY REFERENCES Apartments,
 	ContractTypeID int NOT NULL FOREIGN KEY REFERENCES ContractTypes,
 	ContractStartDate date NOT NULL,
 	ContractEndDate date NULL,
 	CONSTRAINT startDateConstraint CHECK (ContractStartDate <= GETDATE()),
-	CONSTRAINT apartmentForeignKey FOREIGN KEY (ApartmentNumber,BuildingID) REFERENCES Apartments(Number,BuildingID),
 );
 GO
 
@@ -79,11 +78,9 @@ GO
 CREATE TABLE ApartmentTrafficLog(
 	ApartmentEntranceLogID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
 	PersonID int FOREIGN KEY REFERENCES People,
-	ApartmentNumber int,
-	BuildingID int,
+	ApartmentID int FOREIGN KEY REFERENCES Apartments,
 	TimeOfEntrance datetime NULL,
 	TimeOfExit datetime NULL,
-	CONSTRAINT apartment FOREIGN KEY (ApartmentNumber,BuildingID) REFERENCES Apartments(Number, BuildingID),
 );
 GO
 CREATE PROCEDURE uspEndContract
@@ -101,8 +98,7 @@ GO
 
 CREATE PROCEDURE uspCreateContract
 	@PersonID int,
-	@ApartmentNumber int,
-	@BuildingID int,
+	@ApartmentID int,
 	@ContractTypeID int,
 	@StartDate date = NULL
 AS
@@ -112,18 +108,16 @@ AS
 	INSERT INTO Contracts(
 		PersonID,
 		ContractTypeID,
-		ApartmentNumber,
-	    BuildingID,
+	    ApartmentID,
 		ContractStartDate
 	)
 	VALUES
-		(@PersonID, @ContractTypeID, @ApartmentNumber, @BuildingID, @StartDate)
+		(@PersonID, @ContractTypeID, @ApartmentID, @StartDate)
 GO
 
 CREATE PROCEDURE uspContractChangeApartment
 	@ContractID int,
-	@NewApartmentNumber int,
-	@NewBuildingID int,
+	@NewApartmentID int,
 	@ChangeDate date = NULL
 AS
 	DECLARE @ContractType int
@@ -134,7 +128,7 @@ AS
 	BEGIN TRANSACTION newContractTransaction;
 	BEGIN TRY
 	EXEC uspEndContract @ContractID=@ContractID, @EndDate=@ChangeDate
-	EXEC uspCreateContract @PersonID=@PersonID, @ApartmentNumber=@NewApartmentNumber, @BuildingID=@NewBuildingID, @ContractTypeID=@ContractType, @StartDate=@ChangeDate
+	EXEC uspCreateContract @PersonID=@PersonID, @ApartmentID=@NewApartmentID, @ContractTypeID=@ContractType, @StartDate=@ChangeDate
 	COMMIT
 	END TRY
 	BEGIN CATCH
@@ -169,6 +163,6 @@ AS
 SELECT p.FirstName, p.LastName,a.Number,b.Address
 FROM People p
 INNER JOIN Contracts c ON p.PersonID = c.PersonID
-INNER JOIN Apartments a ON c.ApartmentNumber = a.Number AND c.BuildingID = a.BuildingID
+INNER JOIN Apartments a ON c.ApartmentID = a.ApartmentID
 INNER JOIN Buildings b ON a.BuildingID = b.BuildingID
 WHERE c.ContractEndDate IS NULL

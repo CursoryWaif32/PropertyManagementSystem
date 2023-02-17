@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.dto.BuildingAddDTO;
 import org.example.dto.BuildingEditDTO;
 import org.example.entities.Apartment;
-import org.example.entities.BuildingWithApartments;
+import org.example.entities.Building;
 import org.example.repositories.BuildingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class BuildingsController {
     }
 
     @GetMapping()
-    public Iterable<BuildingWithApartments> getAllBuildings(){
+    public Iterable<Building> getAllBuildings(){
         return buildingRepo.findAll();
     }
 
@@ -38,8 +38,8 @@ public class BuildingsController {
             }
     )
     @GetMapping("/{id}")
-    public BuildingWithApartments getBuildingById(@PathVariable Long id){
-        Optional<BuildingWithApartments> building = buildingRepo.findByBuildingId(id);
+    public Building getBuildingById(@PathVariable Long id){
+        Optional<Building> building = buildingRepo.findByBuildingId(id);
         if(building.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No Building found with ID: "+id);
         }
@@ -48,7 +48,7 @@ public class BuildingsController {
 
     @PostMapping
     public void addBuilding(@RequestBody BuildingAddDTO buildingDTO){
-        BuildingWithApartments building = new BuildingWithApartments();
+        Building building = new Building();
         building.setAddress(buildingDTO.address());
         List<Apartment> apartmentList = new ArrayList<>();
         if(buildingDTO.apartments().isPresent()){
@@ -64,7 +64,7 @@ public class BuildingsController {
 
     @PatchMapping("/{id}")
     public void editBuilding(@PathVariable Long id, @RequestBody BuildingEditDTO buildingUpdate){
-        BuildingWithApartments building = getBuildingById(id);
+        Building building = getBuildingById(id);
         if(buildingUpdate.address().isPresent()){
             building.setAddress(buildingUpdate.address().get());
         }
