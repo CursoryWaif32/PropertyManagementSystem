@@ -30,7 +30,7 @@ public class PeopleController {
     public Person getPersonByID(@PathVariable Long id){
         Optional<Person> person = peopleRepo.findByPersonId(id);
         if(person.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No Person found with ID: "+id);
         }
         return person.get();
     }

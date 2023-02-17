@@ -32,7 +32,7 @@ public class BuildingsController {
     public BuildingWithApartments getBuildingById(@PathVariable Long id){
         Optional<BuildingWithApartments> building = buildingRepo.findByBuildingId(id);
         if(building.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No Building found with ID: "+id);
         }
         return building.get();
     }
