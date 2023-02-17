@@ -14,6 +14,11 @@ public interface ContractRepository  extends CrudRepository<Contract,Long> {
     Optional<Contract> findByContractId(Long id);
 
     @Procedure
+    void uspEndContract(Long ContractID);
+
+    @Procedure
+    void uspContractChangeApartment(Long contractID, Long newApartmentNumber, Long newBuildingID);
+    @Procedure
     void uspCreateContract(Long personID, Long apartmentNumber,Long buildingID, Long ContractTypeID, Date startDate);
 
     Iterable<Contract> findContractByContractTypeNameLikeIgnoreCase(String name);

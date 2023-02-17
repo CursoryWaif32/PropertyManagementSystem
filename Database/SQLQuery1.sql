@@ -87,12 +87,14 @@ CREATE TABLE ApartmentTrafficLog(
 );
 GO
 CREATE PROCEDURE uspEndContract
-	@PersonID int,
-	@EndDate date
+	@ContractID int,
+	@EndDate date = NULL
 AS
-	DECLARE @ContractID int
-	SELECT @ContractID = ContractID FROM Contracts WHERE PersonID = @PersonID AND ContractEndDate IS NULL
+    IF @EndDate IS NULL
+        SELECT @EndDate = GETDATE();
 	UPDATE Contracts SET ContractEndDate = @EndDate WHERE ContractID = @ContractID
+    DECLARE @PersonID  int
+    SELECT @PersonID  = PersonID FROM Contracts WHERE ContractID = @ContractID
 	UPDATE People SET PersonTypeID=1 WHERE PersonID=@PersonID
 
 GO
@@ -118,19 +120,20 @@ AS
 		(@PersonID, @ContractTypeID, @ApartmentNumber, @BuildingID, @StartDate)
 GO
 
-CREATE PROCEDURE uspPersonChangeApartment
-	@PersonID int,
+CREATE PROCEDURE uspContractChangeApartment
+	@ContractID int,
 	@NewApartmentNumber int,
 	@NewBuildingID int,
 	@ChangeDate date = NULL
 AS
 	DECLARE @ContractType int
+    DECLARE @PersonID int
 	IF @CHANGEDATE IS NULL
 		SELECT @ChangeDate = GETDATE();
-	SELECT  @ContractType = ContractTypeID FROM Contracts WHERE PersonID = @PersonID AND ContractEndDate IS NULL
+	SELECT  @ContractType = ContractTypeID, @PersonID = PersonID FROM Contracts WHERE ContractID = @ContractID
 	BEGIN TRANSACTION newContractTransaction;
 	BEGIN TRY
-	EXEC uspEndContract @PersonID=@PersonID, @EndDate=@ChangeDate
+	EXEC uspEndContract @ContractID=@ContractID, @EndDate=@ChangeDate
 	EXEC uspCreateContract @PersonID=@PersonID, @ApartmentNumber=@NewApartmentNumber, @BuildingID=@NewBuildingID, @ContractTypeID=@ContractType, @StartDate=@ChangeDate
 	COMMIT
 	END TRY
