@@ -2,8 +2,8 @@ package org.example.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Contracts")
@@ -26,8 +26,8 @@ public class Contract {
   @ManyToOne
   @JoinColumn(name = "contractTypeID")
   private ContractType contractType;
-  private java.sql.Date contractStartDate;
-  private java.sql.Date contractEndDate;
+  private LocalDateTime contractStartDate;
+  private LocalDateTime contractEndDate;
 
 
   public long getContractId() {
@@ -66,20 +66,20 @@ public class Contract {
   }
 
 
-  public java.sql.Date getContractStartDate() {
+  public LocalDateTime getContractStartDate() {
     return contractStartDate;
   }
 
-  public void setContractStartDate(java.sql.Date contractStartDate) {
+  public void setContractStartDate(LocalDateTime contractStartDate) {
     this.contractStartDate = contractStartDate;
   }
 
 
-  public java.sql.Date getContractEndDate() {
+  public LocalDateTime getContractEndDate() {
     return contractEndDate;
   }
 
-  public void setContractEndDate(java.sql.Date contractEndDate) {
+  public void setContractEndDate(LocalDateTime contractEndDate) {
     this.contractEndDate = contractEndDate;
   }
 

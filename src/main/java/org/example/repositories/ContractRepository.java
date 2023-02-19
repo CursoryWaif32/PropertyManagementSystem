@@ -1,5 +1,6 @@
 package org.example.repositories;
 
+import org.example.entities.Apartment;
 import org.example.entities.Contract;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public interface ContractRepository  extends CrudRepository<Contract,Long> {
 
     Optional<Contract> findByContractId(Long id);
+
+    Optional<Contract> findByApartment(Apartment apartment);
 
     @Procedure
     void uspEndContract(Long ContractID);

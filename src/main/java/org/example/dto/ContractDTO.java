@@ -1,4 +1,4 @@
 package org.example.dto;
 
-public record ContractDTO (Long personID, Long buildingID, Long ApartmentNumber, Long ContractTypeID) {
+public record ContractDTO (Long personID, Long ContractTypeID) {
 }
