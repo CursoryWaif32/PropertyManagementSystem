@@ -26,20 +26,11 @@ VALUES
 	(2,4,2)
 GO
 
-INSERT INTO PersonTypes(
-	Name
-)
-VALUES
-	('Visitor'),
-	('Resident'),
-	('Staff')
-GO
-
 INSERT INTO People(
- FirstName,LastName,IDNumber,PersonTypeID
+ FirstName,LastName,IDNumber
  )
  VALUES
-	('John','Doe','0101105097089',2)
+	('John','Doe','0101105097089')
 GO
 
 INSERT INTO People(

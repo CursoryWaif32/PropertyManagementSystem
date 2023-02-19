@@ -34,18 +34,11 @@ CREATE TABLE ContractTypes(
 );
 GO
 
-CREATE TABLE PersonTypes(
-	PersonTypeID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
-	Name varchar(50) NULL,
-);
-GO
-
 CREATE TABLE People(
 	PersonID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
 	FirstName varchar(50) NULL,
 	LastName varchar(50) NULL,
 	IDNumber char(13) NULL,
-	PersonTypeID int NOT NULL FOREIGN KEY REFERENCES PersonTypes DEFAULT 1,
 	CONSTRAINT IdIsNumericCheck CHECK ((ISNUMERIC(IDNumber) = 1 OR IDNumber IS NULL)),
 );
 GO
@@ -90,10 +83,6 @@ AS
     IF @EndDate IS NULL
         SELECT @EndDate = GETDATE();
 	UPDATE Contracts SET ContractEndDate = @EndDate WHERE ContractID = @ContractID
-    DECLARE @PersonID  int
-    SELECT @PersonID  = PersonID FROM Contracts WHERE ContractID = @ContractID
-	UPDATE People SET PersonTypeID=1 WHERE PersonID=@PersonID
-
 GO
 
 CREATE PROCEDURE uspCreateContract
@@ -104,7 +93,6 @@ CREATE PROCEDURE uspCreateContract
 AS
 	IF @StartDate IS NULL
 		SELECT @StartDate = GETDATE();
-	UPDATE People SET PersonTypeID = 2 WHERE PersonID = @PersonID
 	INSERT INTO Contracts(
 		PersonID,
 		ContractTypeID,
@@ -146,16 +134,6 @@ BEGIN
 	SELECT @visitCount = COUNT(PersonID) FROM ApartmentTrafficLog WHERE PersonID=@PersonID
 	RETURN @visitCount	
 END
-GO
-
-CREATE VIEW vFrequentVisitors
-AS
-SELECT
-	FirstName,
-	LastName,
-	dbo.udfVisitCount(PersonID) AS TotalVisits
-FROM People
-WHERE PersonTypeID = 1 AND dbo.udfVisitCount(PersonID) > 0
 GO
 
 CREATE VIEW vCurrentResidents
